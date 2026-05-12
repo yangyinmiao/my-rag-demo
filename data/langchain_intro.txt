@@ -1,0 +1,91 @@
+LangChain 框架介绍
+
+LangChain 是一个用于开发由大语言模型（LLM）驱动的应用程序的开源框架，由 Harrison Chase 于 2022 年 10 月发布。它提供了一套完整的工具链，使开发者能够快速构建复杂的 AI 应用。
+
+LangChain 的核心概念
+
+一、模型（Models）
+LangChain 支持多种类型的模型：
+- LLM（大语言模型）：接收文本输入，返回文本输出
+- Chat Models（对话模型）：接收消息列表，返回消息
+- Embedding Models（嵌入模型）：将文本转换为向量
+
+二、提示词模板（Prompt Templates）
+提示词模板帮助开发者动态构建提示词，支持变量替换：
+- PromptTemplate：用于普通 LLM
+- ChatPromptTemplate：用于对话模型
+- FewShotPromptTemplate：包含少样本示例
+
+三、链（Chains）
+链将多个组件串联起来，形成处理流水线：
+- LLMChain：最基础的链，包含提示词和 LLM
+- RetrievalQA：用于 RAG 的问答链
+- ConversationalRetrievalChain：带对话历史的 RAG 链
+
+四、LCEL（LangChain Expression Language）
+LCEL 是 LangChain 的声明式链接语言，使用管道操作符（|）串联组件：
+
+```python
+chain = prompt | llm | output_parser
+result = chain.invoke({"question": "什么是 RAG？"})
+```
+
+五、文档加载器（Document Loaders）
+LangChain 提供了 100+ 种文档加载器，支持：
+- 本地文件：TXT、PDF、CSV、HTML、Markdown
+- 在线资源：Wikipedia、YouTube、GitHub
+- 数据库：SQL、MongoDB
+
+六、文本分割器（Text Splitters）
+将长文档切分为适合处理的小块：
+- RecursiveCharacterTextSplitter：递归分割（最常用）
+- CharacterTextSplitter：按字符分割
+- MarkdownHeaderTextSplitter：按标题层级分割
+- TokenTextSplitter：按 Token 数量分割
+
+七、向量存储（Vector Stores）
+LangChain 集成了主流向量数据库：
+- ChromaDB（内置支持）
+- Faiss（高性能）
+- Pinecone（云服务）
+- Weaviate（开源）
+
+八、检索器（Retrievers）
+检索器从向量库中查找相关文档：
+- VectorStoreRetriever：基础向量检索
+- MultiQueryRetriever：多查询检索
+- ContextualCompressionRetriever：上下文压缩检索
+- EnsembleRetriever：集成多种检索方式
+
+LangChain 的优势
+
+1. 模块化设计：各组件可以灵活组合
+2. 丰富的集成：支持数百种 LLM、工具和数据源
+3. 流式输出：支持实时流式响应
+4. 异步支持：支持异步调用，提高性能
+5. 活跃社区：持续更新，文档完善
+
+LangChain 生态系统
+
+- langchain：核心框架
+- langchain-community：社区贡献的集成
+- langchain-openai：OpenAI 专用集成
+- langserve：将链部署为 API
+- langsmith：LLM 应用调试和监控平台
+- langgraph：构建复杂的多智能体应用
+
+安装 LangChain
+
+pip install langchain langchain-community langchain-openai
+
+快速入门示例
+
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+
+llm = ChatOpenAI(model="gpt-4o-mini")
+prompt = ChatPromptTemplate.from_template("请用中文回答：{question}")
+chain = prompt | llm
+
+response = chain.invoke({"question": "什么是大语言模型？"})
+print(response.content)
